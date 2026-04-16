@@ -95,6 +95,17 @@ public_users.get('/title/:title',function (req, res) {
   return res.send(JSON.stringify(filteredBooks, null, 4));
 });
 
+// Get book details based on title using async-await with Axios 
+public_users.get('/async/title/:title', async function (req, res) {
+    try {
+      const title = req.params.title;
+      const response = await axios.get(`http://localhost:5000/title/${title}`);
+      return res.status(200).json(response.data);
+    } catch (error) {
+      return res.status(500).json({ message: 'Error fetching books by title' });
+    }
+  });
+
 //  Get book review
 public_users.get('/review/:isbn',function (req, res) {
   //Write your code here
