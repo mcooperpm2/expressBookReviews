@@ -110,7 +110,17 @@ public_users.get('/async/title/:title', async function (req, res) {
 public_users.get('/review/:isbn',function (req, res) {
   //Write your code here
   const isbn = req.params.isbn;
-  return res.send(JSON.stringify(books[isbn].reviews, null, 4));
+  if (!books[isbn]) {
+    return res.status(404).json({ message: "Book not found" });
+  }
+
+  const reviews = books[isbn].reviews;
+
+  if (Object.keys(reviews).length === 0) {
+    return res.status(200).json({ message: "No reviews found for this book." });
+  }
+
+  return res.status(200).json(reviews);
 });
 
 module.exports.general = public_users;
